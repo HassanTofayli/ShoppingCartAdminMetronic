@@ -1,0 +1,138 @@
+﻿@model IEnumerable<Product>
+
+
+
+@foreach (var p in Model)
+{
+	<div class="product-wrapper">
+		<div class="product-container">
+			<img src="~/media/products/@p.ThumbnailImage" class="product-top">
+			<div class="product-bottom">
+				<div class="product-left">
+					<div class="product-details">
+						<h1 class="product-title">@p.Name</h1>
+						<p>@p.Price.ToString("C2")</p>
+					</div>
+					<div data-id="@p.Id" class="product-buy"><i class="material-icons">add_shopping_cart</i></div>
+				</div>
+				<div class="product-right">
+					<div class="product-done"><i class="material-icons">done</i></div>
+					<div class="product-details">
+						<h1 class="product-title">@p.Name</h1>
+						<p>Added to your cart</p>
+					</div>
+					<div data-id="@p.Id" class="product-remove"><i class="material-icons">clear</i></div>
+				</div>
+			</div>
+		</div>
+		<div class="inside">
+			<div class="product-icon"><i class="material-icons">info_outline</i></div>
+			<div class="product-contents">
+				<table>
+					<tr>
+						<th>Description</th>
+						<th></th>
+					</tr>
+					<tr>
+						<td>@p.Description</td>
+						<td>4000mm</td>
+					</tr>
+					<tr>
+						<th>Something</th>
+						<th>Something</th>
+					</tr>
+					<tr>
+						<td>200mm</td>
+						<td>200mm</td>
+					</tr>
+					<tr>
+						<th>Something</th>
+						<th>Something</th>
+					</tr>
+					<tr>
+						<td>200mm</td>
+						<td>200mm</td>
+					</tr>
+					<tr>
+						<th>Something</th>
+						<th>Something</th>
+					</tr>
+					<tr>
+						<td>200mm</td>
+						<td>200mm</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+}
+
+
+@if(ViewBag.Cart != null)
+{
+	<script>
+		var cartItems = @Html.Raw(Json.Serialize(ViewBag.Cart));
+		console.log("I am after HTML Raw!!");
+
+
+		cartItems.forEach(function(item) {
+
+			console.log("I am in foreach!!");
+			var elements = document.querySelectorAll('.product-buy');
+
+
+			elements.forEach(function(element) {
+			  var dataId = element.getAttribute('data-id');
+			  console.log("dataId: "+dataId);
+				console.log("ProductId: " + item.productId);
+				console.log("item: " + JSON.stringify(item));
+
+				if (dataId == item.productId) {
+					element.closest('.product-bottom').classList.add("product-clicked");
+					console.log('Match found:', element);
+			  }
+			});
+
+		})
+	</script>
+}
+
+@*
+<script>
+	document.addEventListener("DOMContentLoaded", function(){
+		const add_to_cart_buttons = document.querySelectorAll('.product-buy');
+
+		add_to_cart_buttons.forEach(function(btn){
+			btn.addEventListener("click", function(){
+				//if (newName !== "") {
+				//	console.log("I am in before fetch");
+				//	console.log(`New Name: ${newName}, Data Id: ${dataId}`);
+
+				//	fetch(`/Products/ChangeName?&id=${dataId}&name=${newName}`, {
+				//		method: "POST",
+				//		headers: { "Content-Type": "application/json" },
+				//		body: JSON.stringify({ name: newName, id: dataId })
+				//	})
+				//		.then(response => response.json())
+				//		.then(data => {
+				//			if (data.success) {
+
+				//				const names = document.querySelectorAll(".ProductName");
+				//				names.forEach(function (name) {
+				//					if (name.getAttribute("data-id") == dataId)
+				//						name.textContent = newName;
+				//				});
+				//				alert("Name changed successfully! =>  " + newName);
+
+				//			} else {
+				//				alert("Failed to change name!");
+				//			}
+				//		})
+				//		.catch((error) => {
+				//			console.error("Error:", error);
+				//		});
+				//}
+			});
+		});
+	});
+</script>*@
