@@ -11,8 +11,8 @@ namespace ShoppingCartAdminMetronic.Data
 
 			if (!context.Products.Any())
 			{
-				Category fruits = new Category { Name = "Fruits", Slug = "fruits" };
-				Category shirts = new Category { Name = "Shirts", Slug = "shirts" };
+				Category fruits = new Category { Name = "Fruits", Slug = "fruits", ThimbnailImage = "apple.jpg" };
+				Category shirts = new Category { Name = "Shirts", Slug = "shirts", ThimbnailImage = "longsleeve.jpg" };
 
 				context.Products.AddRange(
 						new Product
