@@ -8,7 +8,7 @@
 			<span class="text-gray-400 mt-1 fw-semibold fs-6">1M Products Shipped so far</span>
 		</h3>
 		<div class="card-toolbar">
-			<a href="https://preview.keenthemes.com/metronic8/demo1/apps/ecommerce/sales/details.html" class="btn btn-sm btn-light">Order Details</a>
+			<a asp-controller="Cart" asp-action="Index" class="btn btn-sm btn-light">Order Details</a>
 		</div>
 	</div>
 	<div class="card-body">
@@ -20,7 +20,8 @@
 				{
 					@foreach (var item in Model.CartItems)
 					{
-
+						<script>console.log("@item.ProductName quantity @item.Quantity")</script>
+						<script>console.log("@item)</script>
 						<div class="border border-dashed border-gray-300 rounded px-7 py-3 mb-6">
 							<div class="d-flex flex-stack mb-3">
 								<div class="me-3">
@@ -98,7 +99,6 @@
 								<span class="badge badge-light-primary">@item.Quantity</span>
 							</div>
 						</div>
-
 					}
 				}
 
@@ -106,7 +106,7 @@
 			<span class="text-gray-400 fw-bold">
 				Total Price:
 				<p class="text-gray-800 text-hover-primary fw-bold">
-					100$
+					@ViewBag.sum.ToString("C2")
 				</p>
 			</span>
 		</div>

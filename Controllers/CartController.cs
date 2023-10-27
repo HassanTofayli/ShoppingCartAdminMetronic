@@ -45,6 +45,7 @@ namespace ShoppingCartAdminMetronic.Controllers
 
 			HttpContext.Session.SetJson("Cart", cart);
 			TempData["Success"] = "The product has been added";
+			ViewBag.sum = cart?.Sum(x => x.Quantity * x.Price) ?? 0;
 
 			return Redirect(Request.Headers["Referer"].ToString());
 		}
@@ -74,6 +75,7 @@ namespace ShoppingCartAdminMetronic.Controllers
 			}
 
 			TempData["Success"] = "The product has been removed";
+			ViewBag.sum = cart?.Sum(x => x.Quantity * x.Price) ?? 0;
 
 			return RedirectToAction("Index");
 		}
@@ -96,12 +98,14 @@ namespace ShoppingCartAdminMetronic.Controllers
 			}
 
 			TempData["Success"] = "The product has been removed";
+			ViewBag.sum = cart?.Sum(x => x.Quantity * x.Price) ?? 0;
 
 			return RedirectToAction("Index");
 		}
 		public async Task<IActionResult> Clear(long id)
 		{
 			HttpContext.Session.Remove("Cart");
+			ViewBag.sum = 0;
 
 			return RedirectToAction("Index");
 		}

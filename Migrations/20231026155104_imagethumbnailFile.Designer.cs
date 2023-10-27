@@ -12,8 +12,8 @@ using ShoppingCartAdminMetronic.Data;
 namespace ShoppingCartAdminMetronic.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231003103150_NoImageUrl")]
-    partial class NoImageUrl
+    [Migration("20231026155104_imagethumbnailFile")]
+    partial class imagethumbnailFile
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -240,9 +240,33 @@ namespace ShoppingCartAdminMetronic.Migrations
                     b.Property<string>("Slug")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ThumbnailImage")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("ShoppingCartAdminMetronic.Models.ImageUrl", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("productId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("productId");
+
+                    b.ToTable("ImageUrls");
                 });
 
             modelBuilder.Entity("ShoppingCartAdminMetronic.Models.Product", b =>
@@ -331,6 +355,17 @@ namespace ShoppingCartAdminMetronic.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ShoppingCartAdminMetronic.Models.ImageUrl", b =>
+                {
+                    b.HasOne("ShoppingCartAdminMetronic.Models.Product", "product")
+                        .WithMany("ImagesUrls")
+                        .HasForeignKey("productId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("product");
+                });
+
             modelBuilder.Entity("ShoppingCartAdminMetronic.Models.Product", b =>
                 {
                     b.HasOne("ShoppingCartAdminMetronic.Models.Category", "Category")
@@ -340,6 +375,11 @@ namespace ShoppingCartAdminMetronic.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("ShoppingCartAdminMetronic.Models.Product", b =>
+                {
+                    b.Navigation("ImagesUrls");
                 });
 #pragma warning restore 612, 618
         }

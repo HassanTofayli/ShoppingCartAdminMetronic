@@ -237,7 +237,7 @@ namespace ShoppingCartAdminMetronic.Migrations
                     b.Property<string>("Slug")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ThimbnailImage")
+                    b.Property<string>("ThumbnailImage")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

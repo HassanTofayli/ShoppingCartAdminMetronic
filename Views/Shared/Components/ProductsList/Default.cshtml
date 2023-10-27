@@ -72,24 +72,18 @@
 {
 	<script>
 		var cartItems = @Html.Raw(Json.Serialize(ViewBag.Cart));
-		console.log("I am after HTML Raw!!");
 
 
 		cartItems.forEach(function(item) {
 
-			console.log("I am in foreach!!");
 			var elements = document.querySelectorAll('.product-buy');
 
 
 			elements.forEach(function(element) {
 			  var dataId = element.getAttribute('data-id');
-			  console.log("dataId: "+dataId);
-				console.log("ProductId: " + item.productId);
-				console.log("item: " + JSON.stringify(item));
 
 				if (dataId == item.productId) {
 					element.closest('.product-bottom').classList.add("product-clicked");
-					console.log('Match found:', element);
 			  }
 			});
 

@@ -11,8 +11,40 @@ namespace ShoppingCartAdminMetronic.Data
 
 			if (!context.Products.Any())
 			{
-				Category fruits = new Category { Name = "Fruits", Slug = "fruits", ThimbnailImage = "apple.jpg" };
-				Category shirts = new Category { Name = "Shirts", Slug = "shirts", ThimbnailImage = "longsleeve.jpg" };
+				var fruits = new Category { Name = "Fruits", Slug = "fruits", ThumbnailImage = "apple.jpg" };
+				var shirts = new Category { Name = "Shirts", Slug = "shirts", ThumbnailImage = "buttondown.jpg" };
+
+				// 12 new categories
+				var electronics = new Category { Name = "Electronics", Slug = "electronics", ThumbnailImage = "electronics.jpg" };
+				var books = new Category { Name = "Books", Slug = "books", ThumbnailImage = "books.jpg" };
+				var toys = new Category { Name = "Toys", Slug = "toys", ThumbnailImage = "toys.jpg" };
+				var furniture = new Category { Name = "Furniture", Slug = "furniture", ThumbnailImage = "furniture.jpg" };
+				var shoes = new Category { Name = "Shoes", Slug = "shoes", ThumbnailImage = "shoes.jpg" };
+				var beauty = new Category { Name = "Beauty", Slug = "beauty", ThumbnailImage = "beauty.jpg" };
+				var sports = new Category { Name = "Sports", Slug = "sports", ThumbnailImage = "sports.jpg" };
+				var garden = new Category { Name = "Garden", Slug = "garden", ThumbnailImage = "garden.jpg" };
+				var musicalInstruments = new Category { Name = "Musical Instruments", Slug = "musical-instruments", ThumbnailImage = "musical-instruments.jpg" };
+				var kitchen = new Category { Name = "Kitchen", Slug = "kitchen", ThumbnailImage = "kitchen.jpg" };
+				var stationery = new Category { Name = "Stationery", Slug = "stationery", ThumbnailImage = "stationery.jpg" };
+				var tools = new Category { Name = "Tools", Slug = "tools", ThumbnailImage = "tools.jpg" };
+
+				// Add to the Categories DbSet
+				context.Categories.AddRange(
+					fruits,
+					shirts,
+					electronics,
+					books,
+					toys,
+					furniture,
+					shoes,
+					beauty,
+					sports,
+					garden,
+					musicalInstruments,
+					kitchen,
+					stationery,
+					tools
+				);
 
 				context.Products.AddRange(
 						new Product

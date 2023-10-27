@@ -12,7 +12,7 @@ using ShoppingCartAdminMetronic.Data;
 namespace ShoppingCartAdminMetronic.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231023121320_categoryThumbnail")]
+    [Migration("20231024133240_categoryThumbnail")]
     partial class categoryThumbnail
     {
         /// <inheritdoc />
@@ -240,7 +240,7 @@ namespace ShoppingCartAdminMetronic.Migrations
                     b.Property<string>("Slug")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ThimbnailImage")
+                    b.Property<string>("ThumbnailImage")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

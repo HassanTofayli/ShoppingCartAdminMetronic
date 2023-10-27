@@ -5,7 +5,7 @@
 namespace ShoppingCartAdminMetronic.Migrations
 {
 	/// <inheritdoc />
-	public partial class NoImageUrl : Migration
+	public partial class categoryThumbnail : Migration
 	{
 		/// <inheritdoc />
 		protected override void Up(MigrationBuilder migrationBuilder)
@@ -57,7 +57,8 @@ namespace ShoppingCartAdminMetronic.Migrations
 					Id = table.Column<long>(type: "bigint", nullable: false)
 						.Annotation("SqlServer:Identity", "1, 1"),
 					Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-					Slug = table.Column<string>(type: "nvarchar(max)", nullable: true)
+					Slug = table.Column<string>(type: "nvarchar(max)", nullable: true),
+					ThumbnailImage = table.Column<string>(type: "nvarchar(max)", nullable: true)
 				},
 				constraints: table =>
 				{
@@ -194,6 +195,26 @@ namespace ShoppingCartAdminMetronic.Migrations
 						onDelete: ReferentialAction.Cascade);
 				});
 
+			migrationBuilder.CreateTable(
+				name: "ImageUrls",
+				columns: table => new
+				{
+					Id = table.Column<long>(type: "bigint", nullable: false)
+						.Annotation("SqlServer:Identity", "1, 1"),
+					url = table.Column<string>(type: "nvarchar(max)", nullable: true),
+					productId = table.Column<long>(type: "bigint", nullable: false)
+				},
+				constraints: table =>
+				{
+					table.PrimaryKey("PK_ImageUrls", x => x.Id);
+					table.ForeignKey(
+						name: "FK_ImageUrls_Products_productId",
+						column: x => x.productId,
+						principalTable: "Products",
+						principalColumn: "Id",
+						onDelete: ReferentialAction.Cascade);
+				});
+
 			migrationBuilder.CreateIndex(
 				name: "IX_AspNetRoleClaims_RoleId",
 				table: "AspNetRoleClaims",
@@ -234,6 +255,11 @@ namespace ShoppingCartAdminMetronic.Migrations
 				filter: "[NormalizedUserName] IS NOT NULL");
 
 			migrationBuilder.CreateIndex(
+				name: "IX_ImageUrls_productId",
+				table: "ImageUrls",
+				column: "productId");
+
+			migrationBuilder.CreateIndex(
 				name: "IX_Products_CategoryId",
 				table: "Products",
 				column: "CategoryId");
@@ -258,13 +284,16 @@ namespace ShoppingCartAdminMetronic.Migrations
 				name: "AspNetUserTokens");
 
 			migrationBuilder.DropTable(
-				name: "Products");
+				name: "ImageUrls");
 
 			migrationBuilder.DropTable(
 				name: "AspNetRoles");
 
 			migrationBuilder.DropTable(
 				name: "AspNetUsers");
+
+			migrationBuilder.DropTable(
+				name: "Products");
 
 			migrationBuilder.DropTable(
 				name: "Categories");
