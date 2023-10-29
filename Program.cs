@@ -14,7 +14,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 	options.UseSqlServer(builder.Configuration["ConnectionStrings:DbConnection"]);
 });
 
-
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {

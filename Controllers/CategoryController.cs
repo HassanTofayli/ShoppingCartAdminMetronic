@@ -80,6 +80,8 @@ namespace ShoppingCartAdminMetronic.Controllers
 
 			var products = await _context.Products.Where(p => p.CategoryId == category.Id).ToListAsync();
 			ViewBag.Categories = await _context.Categories.ToListAsync();
+			List<CartItem> cart = HttpContext.Session.GetJson<List<CartItem>>("Cart") ?? new List<CartItem>();
+			ViewBag.Cart = cart;
 			return View(products);
 		}
 

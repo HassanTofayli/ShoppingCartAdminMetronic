@@ -23,12 +23,17 @@ namespace ShoppingCartAdminMetronic.Controllers
 				CartItems = cart,
 				GrandTotal = cart.Sum(x => x.Quantity * x.Price)
 			};
+
 			return View(cartVM);
 		}
 
 		public async Task<IActionResult> Add(long id)
 		{
-			Product product = await _context.Products.FindAsync(id) ?? new Product();
+			Product product = await _context.Products.FindAsync(id);
+			if (product == null)
+			{
+				return Json(new { success = false, message = "Product not found" });
+			}
 
 			List<CartItem> cart = HttpContext.Session.GetJson<List<CartItem>>("Cart") ?? new List<CartItem>();
 
@@ -36,7 +41,8 @@ namespace ShoppingCartAdminMetronic.Controllers
 
 			if (cartItem == null)
 			{
-				cart.Add(new CartItem(product));
+				cartItem = new CartItem(product);
+				cart.Add(cartItem);
 			}
 			else
 			{
@@ -44,10 +50,42 @@ namespace ShoppingCartAdminMetronic.Controllers
 			}
 
 			HttpContext.Session.SetJson("Cart", cart);
-			TempData["Success"] = "The product has been added";
-			ViewBag.sum = cart?.Sum(x => x.Quantity * x.Price) ?? 0;
+			var sum = cart?.Sum(x => x.Quantity * x.Price) ?? 0;
+			ViewBag.sum = sum;
 
-			return Redirect(Request.Headers["Referer"].ToString());
+			return Json(new
+			{
+				success = true,
+				message = "The product has been added",
+				cartItem,
+				cartSum = sum.ToString("C2")
+			});
+		}
+
+		public async Task<IActionResult> Increase(long id)
+		{
+
+
+			List<CartItem> cart = HttpContext.Session.GetJson<List<CartItem>>("Cart") ?? new List<CartItem>();
+
+			CartItem cartItem = cart.Where(c => c.ProductId == id).FirstOrDefault();
+
+			if (cartItem != null)
+			{
+				cartItem.Quantity += 1;
+			}
+
+			HttpContext.Session.SetJson("Cart", cart);
+			var sum = cart?.Sum(x => x.Quantity * x.Price) ?? 0;
+			ViewBag.sum = sum;
+
+			return Json(new
+			{
+				success = true,
+				message = "The product has been increased",
+				cartItem,
+				cartSum = sum.ToString("C2")
+			});
 		}
 
 		public IActionResult Decrease(long id)
@@ -62,7 +100,7 @@ namespace ShoppingCartAdminMetronic.Controllers
 			}
 			else
 			{
-				cart.RemoveAll(c => c.ProductId == id);
+				RedirectToAction("Remove", new { id = id });
 			}
 
 			if (cart.Count == 0)
@@ -74,18 +112,26 @@ namespace ShoppingCartAdminMetronic.Controllers
 				HttpContext.Session.SetJson("Cart", cart);
 			}
 
-			TempData["Success"] = "The product has been removed";
-			ViewBag.sum = cart?.Sum(x => x.Quantity * x.Price) ?? 0;
+			var sum = cart?.Sum(x => x.Quantity * x.Price) ?? 0;
+			ViewBag.sum = sum;
 
-			return RedirectToAction("Index");
+			return Json(new
+			{
+				success = true,
+				message = "The product has been decreased",
+				cartItem,
+				cartSum = sum.ToString("C2")
+			});
 		}
 
 		public async Task<IActionResult> Remove(long id)
 		{
 			List<CartItem> cart = HttpContext.Session.GetJson<List<CartItem>>("Cart");
+			bool success = false;
 
+			CartItem cartItem = cart.Where(c => c.ProductId == id).FirstOrDefault();
 
-			cart.RemoveAll(c => c.ProductId == id);
+			var nbOfRemoved = cart.RemoveAll(c => c.ProductId == id);
 
 
 			if (cart.Count == 0)
@@ -96,11 +142,19 @@ namespace ShoppingCartAdminMetronic.Controllers
 			{
 				HttpContext.Session.SetJson("Cart", cart);
 			}
+			if (nbOfRemoved > 0)
+				success = true;
 
-			TempData["Success"] = "The product has been removed";
-			ViewBag.sum = cart?.Sum(x => x.Quantity * x.Price) ?? 0;
+			var sum = cart?.Sum(x => x.Quantity * x.Price) ?? 0;
+			ViewBag.sum = sum;
 
-			return RedirectToAction("Index");
+			return Json(new
+			{
+				success,
+				remove = true,
+				cartItem,
+				cartSum = sum.ToString("C2")
+			});
 		}
 		public async Task<IActionResult> Clear(long id)
 		{
